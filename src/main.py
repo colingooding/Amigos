@@ -34,7 +34,4 @@ class ChoosePlayers(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('templates/choose_players.html')
         self.response.write(template.render())
 
-
-#application = webapp2.WSGIApplication([('/', MainPage)], debug=True)
-#choose = webapp2.WSGIApplication([('/choose_players', ChoosePlayers)], debug=True)
 application = webapp2.WSGIApplication(routes=routes, debug=True)
