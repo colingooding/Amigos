@@ -27,7 +27,7 @@ def record_score(player_name, game_id, score):
         new_score.game_id = game_id
         new_score.score = score
         
-    return new_score
+        new_score.put()
     
 def get_score(player_name, game_id):
     
