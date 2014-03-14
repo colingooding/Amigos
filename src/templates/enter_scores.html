@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Choose Players</title>
+</head>
+<body>
+<p>
+<form action="calculate_scores" method="post">
+   	<input type="hidden" name="game_id" value="{{ game_id }}" />
+   	<input type="hidden" name="players" value="{{ players }}" />
+	{% for player in players %}
+		{{ player }}: <input type="text" name="{{ player }}" placeholder="Enter Score"><br>
+	{% endfor %}
+	<input type="submit" value="Submit">
+</form>
+</p>
+</body>
+</html>

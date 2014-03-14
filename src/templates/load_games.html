@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Choose Game</title>
+</head>
+<body>
+<p>
+	Choose Game (Alabama Time):
+	{% if not games %}
+		No Games Created Yet
+	{% else %}
+		<ul>
+			{% for game in games %}
+				<li>{{ game.created.strftime('%Y-%m-%d %H:%M') }} {{ game.player_list }}</li>
+	    	{% endfor %}
+	    </ul>
+   	{% endif %}
+</p>
+</body>
+</html>

@@ -5,14 +5,38 @@
 <title>Choose Players</title>
 </head>
 <body>
+<form action="enter_scores" method="post">
+   	<input type="hidden" name="game_id" value="{{ game_id }}" />
+	<input type="submit" value="Enter Scores">
+</form>
+{% if player_added_to_game %}
 <p>
-	Choose Players:
-	
+	{{ player_added_to_game }} successfully added to game
+</p>
+{% endif %}
+<p>
+	Add Player To Current Game:
+	<ul>
+		{% if not players %}
+			No Players Created Yet
+		{% else %}
+		<form action="choose_players">
+    	<input type="hidden" name="game_id" value="{{ game_id }}" />
+			<select name="player_added_to_game" style="width: 100px">
+				{% for player in players %}
+					<option value="{{ player.name }}">{{ player.name }}</option>
+	    		{% endfor %}
+			</select>
+		    <input type="submit" value="Choose">
+		</form>
+    	{% endif %}
+    </ul>
 </p>
 <p>
 	Add New Player:
-	<form action="/new_player" method="post">
-		First name: <input type="text" name="name" value="Mickey"><br>
+	<form action="new_player" method="post">
+    	<input type="hidden" name="game_id" value="{{ game_id }}" />
+		First name: <input type="text" name="name" placeholder="Enter Name"><br>
 		<input type="submit" value="Submit">
 	</form>
 </p>

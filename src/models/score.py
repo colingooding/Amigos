@@ -28,6 +28,8 @@ def record_score(player_name, game_id, score):
         new_score.score = score
         
         new_score.put()
+        
+        return new_score
     
 def get_score(player_name, game_id):
     
