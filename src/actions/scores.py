@@ -1,8 +1,9 @@
 from models.score import Score, record_score
-from models.game import Game, get_players_in_game
+from models.game import Game, get_game
 
 import webapp2
 import copy
+import json
 
 from main import JINJA_ENVIRONMENT
 
@@ -12,9 +13,10 @@ def calculate_owings_for_game(game_id):
     
     return calculate_owings(scores)
     
-def calculate_owings(scores):
+def calculate_owings(scores, game):
         
     owings = {}
+    
     for score in scores:
         
         owings[score.player_name] = {} 
@@ -25,7 +27,8 @@ def calculate_owings(scores):
         
         for score_two in scores:
         
-            amount = score_one.score - score_two.score
+            amount = score_one.score  - score_two.score
+            amount = amount * game.point_value 
             
             if amount > 0:
                 
@@ -38,11 +41,9 @@ def calculate_owings(scores):
             
     return owings
 
-def calculate_payments_from_owings(owings, game_id):
+def calculate_payments_from_owings(owings, game):
     
-    game = Game.query(Game.game_id == game_id).fetch()[0]
-    
-    max_payment = game.max_payment / game.point_value
+    max_payment = game.max_payment
     
     for player_paying_name, value in owings.iteritems():
         
@@ -115,34 +116,40 @@ def calculate_payments_from_owings(owings, game_id):
 class EnterScores(webapp2.RequestHandler):
     
     
-    def post(self):
+    def get(self):
         
         game_id = self.request.get('game_id')
-        players = get_players_in_game(int(game_id))
+        
+        game = get_game(int(game_id))
+        
+        players = game.get_players()
         
         context = {
             'game_id': game_id,
-            'players': players
+            'players': players,
+            'jplayers': json.dumps(players),
         }
         
         template = JINJA_ENVIRONMENT.get_template('templates/enter_scores.html')
         self.response.write(template.render(context))
         
 
-class CalculateScores(webapp2.RequestHandler):
+class CalculatePayments(webapp2.RequestHandler):
     
-    def post(self):
+    def get(self):
         
         game_id = self.request.get('game_id')
-        players = get_players_in_game(int(game_id))
-        
+        players = json.loads(self.request.get('jplayers'))
+            
         scores = []
         for player in players:
             scores.append(record_score(player, int(game_id), int(self.request.get(player))))
             
-        owings = calculate_owings(scores)
+        game = get_game(int(game_id))
         
-        payments = calculate_payments_from_owings(owings, int(game_id))
+        owings = calculate_owings(scores, game)
+        
+        payments = calculate_payments_from_owings(owings, game)
         
         context = {
             'game_id': game_id,
@@ -152,7 +159,7 @@ class CalculateScores(webapp2.RequestHandler):
             'payments': payments
         }
         
-        template = JINJA_ENVIRONMENT.get_template('templates/scores.html')
+        template = JINJA_ENVIRONMENT.get_template('templates/payments.html')
         self.response.write(template.render(context))
             
                 

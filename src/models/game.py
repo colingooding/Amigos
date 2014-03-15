@@ -1,7 +1,7 @@
 from google.appengine.ext.ndb import model
 
-import logging
 import datetime
+import json
     
 class Game(model.Model):
 
@@ -9,7 +9,33 @@ class Game(model.Model):
     max_payment = model.FloatProperty(required=True)
     point_value = model.FloatProperty(required=True)
     created = model.DateTimeProperty(required=True)
-    player_list = model.StringProperty()
+    player_list = model.JsonProperty()
+        
+    def get_players(self):
+        
+        if self.player_list:
+            
+            return json.loads(self.player_list)
+        
+        else:
+            
+            return None
+    
+    def add_player(self, player):
+        
+        if self.player_list == None:
+            
+            self.player_list = json.dumps([player])
+            
+        else:
+            
+            players = json.loads(self.player_list)
+            
+            players.append(player)
+            
+            self.player_list = json.dumps(players)
+            
+        self.put()
         
 
 def create_game(max_payment=None, point_value=None):
@@ -29,30 +55,6 @@ def create_game(max_payment=None, point_value=None):
 def get_game(game_id):
     
     return Game.query(Game.game_id == game_id).fetch()[0]
-
-def add_player_to_game(player, game_id):
-        
-    game = get_game(game_id)
-    
-    if game.player_list == None:
-        
-        game.player_list = player
-        print "test1"
-        
-    else:
-        
-        game.player_list = game.player_list + ", " + player
-        print "test2"
-        
-    game.put()
-        
-def get_players_in_game(game_id):
-    
-    game = get_game(game_id)
-    
-    players = game.player_list.split(", ")
-    
-    return players
     
     
     

@@ -2,7 +2,7 @@
 import webapp2
 
 from models.player import create_player, Player
-from models.game import add_player_to_game
+from models.game import get_game
 from main import JINJA_ENVIRONMENT
 
 
@@ -29,11 +29,14 @@ class ChoosePlayers(webapp2.RequestHandler):
     def get(self):
         
         game_id = self.request.get('game_id')
+        
         player_added_to_game = self.request.get('player_added_to_game')
         
         if player_added_to_game:
+        
+            game = get_game(int(game_id))
             
-            add_player_to_game(player_added_to_game, int(game_id))
+            game.add_player(player_added_to_game)
         
         players = Player.query().fetch()
         context = {

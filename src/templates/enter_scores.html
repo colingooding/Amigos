@@ -2,13 +2,17 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Choose Players</title>
+<title>Enter Scores</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
 <p>
-<form action="calculate_scores" method="post">
+<form action="calculate_payments" method="get">
    	<input type="hidden" name="game_id" value="{{ game_id }}" />
-   	<input type="hidden" name="players" value="{{ players }}" />
+   	<input type="hidden" name="jplayers" value="{{ jplayers }}" />
 	{% for player in players %}
 		{{ player }}: <input type="text" name="{{ player }}" placeholder="Enter Score"><br>
 	{% endfor %}

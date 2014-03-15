@@ -3,10 +3,15 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Choose Players</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
-<form action="enter_scores" method="post">
+<form action="enter_scores" method="get">
    	<input type="hidden" name="game_id" value="{{ game_id }}" />
+   	<input type="hidden" name="players" value="{{ players }}" />
 	<input type="submit" value="Enter Scores">
 </form>
 {% if player_added_to_game %}
@@ -16,21 +21,19 @@
 {% endif %}
 <p>
 	Add Player To Current Game:
-	<ul>
-		{% if not players %}
-			No Players Created Yet
-		{% else %}
-		<form action="choose_players">
-    	<input type="hidden" name="game_id" value="{{ game_id }}" />
-			<select name="player_added_to_game" style="width: 100px">
-				{% for player in players %}
-					<option value="{{ player.name }}">{{ player.name }}</option>
-	    		{% endfor %}
-			</select>
-		    <input type="submit" value="Choose">
-		</form>
-    	{% endif %}
-    </ul>
+	{% if not players %}
+		No Players Created Yet
+	{% else %}
+	<form action="choose_players" method="get">
+   	<input type="hidden" name="game_id" value="{{ game_id }}" />
+		<select name="player_added_to_game">
+			{% for player in players %}
+				<option value="{{ player.name }}">{{ player.name }}</option>
+    		{% endfor %}
+		</select>
+	    <input type="submit" value="Choose">
+	</form>
+   	{% endif %}
 </p>
 <p>
 	Add New Player:

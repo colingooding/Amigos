@@ -7,5 +7,5 @@ routes = [
     Route('/load_games', handler='actions.games.LoadGames', name='load_games'),
     Route('/start_game', handler='actions.games.StartGame', name='start_game'),
     Route('/enter_scores', handler='actions.scores.EnterScores', name='enter_scores'),
-    Route('/calculate_scores', handler='actions.scores.CalculateScores', name='calculate_scores'),
+    Route('/calculate_payments', handler='actions.scores.CalculatePayments', name='calculate_payments'),
     ]

@@ -2,18 +2,23 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Amigos Score Calculator</title>
+<title>Payments</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
-<form action="start_game">
-    <input type="submit" value="Start A New Game">
-</form>
-<form action="load_games">
-    <input type="submit" value="Load An Existing Game">
-</form>
+<ul>
+	{% for player in players %}
+		{% if payments[player]|length > 0 %}
+			{{ player }}: <br>
+			{% for receiver, payment in payments[player].iteritems() %}
+				<span style="padding-left: 10%">Pay {{ receiver }} {{ '%0.2f'| format(payment) }}</span><br>
+			{% endfor %}
+			<br><br>
+		{% endif %}
+	{% endfor %}
+</ul>
 </body>
 </html>
