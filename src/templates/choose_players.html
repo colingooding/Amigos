@@ -9,14 +9,20 @@
 <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
+<div style="width:90%;padding:5%;">
 <form action="enter_scores" method="get">
    	<input type="hidden" name="game_id" value="{{ game_id }}" />
    	<input type="hidden" name="players" value="{{ players }}" />
-	<input type="submit" value="Enter Scores">
+	<input type="submit" value="Enter Scores" data-theme="o">
 </form>
-{% if player_added_to_game %}
+{% if player_exists %}
+<p style="color: red">
+	Player {{ player_exists }} was already added to the game!
+</p>
+{% endif %}
+{% if players_in_game %}
 <p>
-	{{ player_added_to_game }} successfully added to game
+	Players in Game: {{ players_in_game }}
 </p>
 {% endif %}
 <p>
@@ -24,24 +30,30 @@
 	{% if not players %}
 		No Players Created Yet
 	{% else %}
-	<form action="choose_players" method="get">
-   	<input type="hidden" name="game_id" value="{{ game_id }}" />
+	<form action="choose_players" method="get" style="text-align:center" >
+	   	<input type="hidden" name="game_id" value="{{ game_id }}" />
+	   	<input type="hidden" name="players_in_game" value="{{ players_in_game }}" />
 		<select name="player_added_to_game">
 			{% for player in players %}
 				<option value="{{ player.name }}">{{ player.name }}</option>
     		{% endfor %}
 		</select>
-	    <input type="submit" value="Choose">
+	    <input type="submit" value="Choose" data-inline="true">
 	</form>
    	{% endif %}
 </p>
 <p>
 	Add New Player:
-	<form action="new_player" method="post">
+	<form action="new_player" method="post" style="text-align:center">
     	<input type="hidden" name="game_id" value="{{ game_id }}" />
-		First name: <input type="text" name="name" placeholder="Enter Name"><br>
-		<input type="submit" value="Submit">
+	   	<input type="hidden" name="players_in_game" value="{{ players_in_game }}" />
+		<input type="text" name="name" placeholder="Enter Name">
+		<input type="submit" value="Submit" data-inline="true">
 	</form>
 </p>
+<form action="/" method="get" style="padding-top:20px">
+	<input type="submit" value="Go To Home Page" data-theme="b">
+</form>
+</div>
 </body>
 </html>

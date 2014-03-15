@@ -1,5 +1,5 @@
 from models.score import Score, record_score
-from models.game import Game, get_game
+from models.game import get_game
 
 import webapp2
 import copy
@@ -138,12 +138,17 @@ class CalculatePayments(webapp2.RequestHandler):
     
     def get(self):
         
-        game_id = self.request.get('game_id')
+        game_id = int(self.request.get('game_id'))
         players = json.loads(self.request.get('jplayers'))
+        load_game = self.request.get('load_game')
             
         scores = []
-        for player in players:
-            scores.append(record_score(player, int(game_id), int(self.request.get(player))))
+        
+        if load_game == "true":
+            scores = Score.query(Score.game_id == game_id).fetch()
+        else:
+            for player in players:
+                scores.append(record_score(player, game_id, int(self.request.get(player))))
             
         game = get_game(int(game_id))
         

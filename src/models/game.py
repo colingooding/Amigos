@@ -37,7 +37,13 @@ class Game(model.Model):
             
         self.put()
         
-
+    def readable_players(self):
+        
+        players = self.get_players()
+        
+        return ', '.join(players)
+        
+        
 def create_game(max_payment=None, point_value=None):
         
     game_id = Game.allocate_ids(1)[0]  
@@ -55,6 +61,18 @@ def create_game(max_payment=None, point_value=None):
 def get_game(game_id):
     
     return Game.query(Game.game_id == game_id).fetch()[0]
+
+def player_is_in_game(game, player):
+    
+    players = game.get_players()
+    
+    if not players:
+        return False
+    else:
+        return True if player in players else False
+        
+        
+    
     
     
     

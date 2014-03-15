@@ -9,7 +9,7 @@
 <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
-<ul>
+<div style="width:90%;padding:5%;">
 	{% for player in players %}
 		{% if payments[player]|length > 0 %}
 			{{ player }}: <br>
@@ -19,6 +19,9 @@
 			<br><br>
 		{% endif %}
 	{% endfor %}
-</ul>
+	<form action="/" method="get" style="padding-top:20px">
+		<input type="submit" value="Go To Home Page" data-theme="b">
+	</form>
+</div>
 </body>
 </html>

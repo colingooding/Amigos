@@ -9,17 +9,23 @@
 <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
-<p>
+<div style="width:90%;padding:5%;">
 	Choose Game (Alabama Time):
 	{% if not games %}
 		No Games Created Yet
 	{% else %}
-		<ul>
-			{% for game in games %}
-				<li>{{ game.created.strftime('%Y-%m-%d %H:%M') }} {{ game.player_list }}</li>
-	    	{% endfor %}
-	    </ul>
+	{% for game in games %}
+	<form action="calculate_payments" method="get">
+	   	<input type="hidden" name="game_id" value="{{ game.game_id }}" />
+	   	<input type="hidden" name="jplayers" value="{{ game.player_list }}" />
+	   	<input type="hidden" name="load_game" value="true" />
+		<input type="submit" value="{{ game.created.strftime('%Y-%m-%d %H:%M') }} {{ game.readable_players() }}">
+	</form>
+   	{% endfor %}
    	{% endif %}
-</p>
+	<form action="/" method="get" style="padding-top:20px">
+		<input type="submit" value="Go To Home Page" data-theme="b">
+	</form>
+</div>
 </body>
 </html>

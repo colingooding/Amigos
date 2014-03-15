@@ -9,7 +9,7 @@
 <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
-<p>
+<div style="width:90%;padding:5%;">
 <form action="calculate_payments" method="get">
    	<input type="hidden" name="game_id" value="{{ game_id }}" />
    	<input type="hidden" name="jplayers" value="{{ jplayers }}" />
@@ -18,6 +18,9 @@
 	{% endfor %}
 	<input type="submit" value="Submit">
 </form>
-</p>
+<form action="/" method="get" style="padding-top:20px">
+	<input type="submit" value="Go To Home Page" data-theme="b">
+</form>
+</div>
 </body>
 </html>

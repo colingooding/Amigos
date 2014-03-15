@@ -9,21 +9,24 @@
 <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
 </head>
 <body>
-<p>
-	{{ name }} successfully added {{ game_id }}
-</p>
-<form action="choose_players">
-    <input type="hidden" name="game_id" value="{{ game_id }}" />
-    <input type="submit" value="Return to Player Selection">
-</form>
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-
+<div style="width:90%;padding:5%;">
+	{% if error %}
+	<p style="color:red">
+		{{ name }} {{ error }}
+	</p>	
+	{% else %}
+	<p>
+		{{ name }} successfully added to the player database
+	</p>
+	{% endif %}
+	<form action="choose_players">
+	    <input type="hidden" name="game_id" value="{{ game_id }}" />
+	    <input type="hidden" name="players_in_game" value="{{ players_in_game }}" />
+	    <input type="submit" value="Return to Player Selection">
+	</form>
+	<form action="/" method="get" style="padding-top:20px">
+		<input type="submit" value="Go To Home Page" data-theme="b">
+	</form>
+</div>
 </body>
 </html>
