@@ -10,20 +10,20 @@
 </head>
 <body>
 <div style="width:90%;padding:5%;">
-	Choose Game (Alabama Time):
 	{% if not games %}
 		No Games Created Yet
 	{% else %}
+	Choose Game (Alabama Time):
 	{% for game in games %}
-	<form action="calculate_payments" method="get">
-	   	<input type="hidden" name="game_id" value="{{ game.game_id }}" />
-	   	<input type="hidden" name="jplayers" value="{{ game.player_list }}" />
-	   	<input type="hidden" name="load_game" value="true" />
-		<input type="submit" value="{{ game.created.strftime('%Y-%m-%d %H:%M') }} {{ game.readable_players() }}">
-	</form>
-   	{% endfor %}
+		<form action="{{ uri_for('calculate_payments') }}" method="get">
+		   	<input type="hidden" name="game_id" value="{{ game.game_id }}" />
+		   	<input type="hidden" name="jplayers" value="{{ game.player_list }}" />
+		   	<input type="hidden" name="load_game" value="true" />
+			<input type="submit" value="{{ game.created.strftime('%Y-%m-%d %H:%M') }} {{ game.readable_players() }}">
+		</form>
+	   	{% endfor %}
    	{% endif %}
-	<form action="/" method="get" style="padding-top:20px">
+	<form action="{{ uri_for('home') }}" method="get" style="padding-top:20px">
 		<input type="submit" value="Go To Home Page" data-theme="b">
 	</form>
 </div>

@@ -42,7 +42,7 @@ def calculate_owings(scores, game):
     return owings
 
 def calculate_payments_from_owings(owings, game):
-    
+
     max_payment = game.max_payment
     
     for player_paying_name, value in owings.iteritems():
@@ -76,40 +76,46 @@ def calculate_payments_from_owings(owings, game):
                     paying_amount -= excess
     
                 owings_for_receiving_player = copy.deepcopy(owings[player_receiving_name])
-                    
-                while owings_for_receiving_player:
-                    
-                    indirect_player_receiving_name = max(owings_for_receiving_player, key=owings_for_receiving_player.get)
                 
-                    indirect_paying_amount = owings_for_receiving_player.pop(indirect_player_receiving_name)
-                    
-                    still_owing = paying_amount - indirect_paying_amount
-                    
-                    if still_owing <= 0:
+                if owings_for_receiving_player:
                         
-                        if still_owing == 0:
+                    while owings_for_receiving_player:
                         
-                            owings[player_receiving_name].pop(indirect_player_receiving_name)
+                        indirect_player_receiving_name = max(owings_for_receiving_player, key=owings_for_receiving_player.get)
+                    
+                        indirect_paying_amount = owings_for_receiving_player.pop(indirect_player_receiving_name)
+                        
+                        still_owing = paying_amount - indirect_paying_amount
+                        
+                        if still_owing <= 0:
+                            
+                            if still_owing == 0:
+                            
+                                owings[player_receiving_name].pop(indirect_player_receiving_name)
+                            
+                            else:
+                                
+                                owings[player_receiving_name][indirect_player_receiving_name] = - still_owing
+                            
+                            owings[player_paying_name][indirect_player_receiving_name] += paying_amount
+                            
+                            owings[player_paying_name].pop(player_receiving_name)
+                            
+                            break
                         
                         else:
                             
-                            owings[player_receiving_name][indirect_player_receiving_name] = - still_owing
-                        
-                        owings[player_paying_name][indirect_player_receiving_name] += paying_amount
-                        
-                        owings[player_paying_name].pop(player_receiving_name)
-                        
-                        break
+                            owings[player_receiving_name].pop(indirect_player_receiving_name)
+                            
+                            owings[player_paying_name][indirect_player_receiving_name] += indirect_paying_amount
+                            
+                            owings[player_paying_name][player_receiving_name] = still_owing
+                            
+                            paying_amount = still_owing
                     
-                    else:
+                else:
                         
-                        owings[player_receiving_name].pop(indirect_player_receiving_name)
-                        
-                        owings[player_paying_name][indirect_player_receiving_name] += indirect_paying_amount
-                        
-                        owings[player_paying_name][player_receiving_name] = still_owing
-                        
-                        paying_amount = still_owing
+                    owings[player_paying_name][player_receiving_name] = paying_amount
                         
     return owings
 
@@ -119,14 +125,17 @@ class EnterScores(webapp2.RequestHandler):
     def get(self):
         
         game_id = self.request.get('game_id')
-        
         game = get_game(int(game_id))
         
         players = game.get_players()
         
+        if players:
+            players_in_game = ', '.join(players)
+        
         context = {
             'game_id': game_id,
             'players': players,
+            'players_in_game': players_in_game,
             'jplayers': json.dumps(players),
         }
         
@@ -139,8 +148,14 @@ class CalculatePayments(webapp2.RequestHandler):
     def get(self):
         
         game_id = int(self.request.get('game_id'))
-        players = json.loads(self.request.get('jplayers'))
         load_game = self.request.get('load_game')
+        
+        jplayers = self.request.get('jplayers')
+        
+        import logging
+        logging.info("jplayers id is |%s|", jplayers)
+        
+        players = json.loads(jplayers) if jplayers != 'None' else []
             
         scores = []
         

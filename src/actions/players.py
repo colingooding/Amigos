@@ -14,13 +14,12 @@ class NewPlayer(webapp2.RequestHandler):
         player = create_player(name)
         
         error = None
-        if not player:
-            if name:
+        if not player or len(name) == 0:
+            if not player:
                 error = "already exists. You must use a unique name."
             else:
                 error = "You didn't enter a name!"
         else:
-            name = player.name
             player.put()
         
         context = {
@@ -30,7 +29,7 @@ class NewPlayer(webapp2.RequestHandler):
             'players_in_game': self.request.get('players_in_game'),
         }
         
-        template = JINJA_ENVIRONMENT.get_template('templates/player_added.html')
+        template = JINJA_ENVIRONMENT.get_template('templates/new_player.html')
         self.response.write(template.render(context))
         
 class ChoosePlayers(webapp2.RequestHandler):

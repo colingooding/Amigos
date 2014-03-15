@@ -19,7 +19,16 @@
 			<br><br>
 		{% endif %}
 	{% endfor %}
-	<form action="/" method="get" style="padding-top:20px">
+
+	<form action="{{ uri_for('enter_scores') }}" method="get" style="padding-top:20px">
+	   	<input type="hidden" name="game_id" value="{{ game_id }}" />
+	   	<input type="hidden" name="players" value="{{ players }}" />
+		<input type="submit" value="Re-Enter Scores" data-theme="b">
+	</form>
+	<form action="{{ uri_for('load_games') }}" method="get" style="padding-top:20px">
+		<input type="submit" value="Load Another Game">
+	</form>
+	<form action="{{ uri_for('home') }}" method="get" style="padding-top:20px">
 		<input type="submit" value="Go To Home Page" data-theme="b">
 	</form>
 </div>

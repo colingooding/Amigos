@@ -10,7 +10,7 @@
 </head>
 <body>
 <div style="width:90%;padding:5%;">
-<form action="enter_scores" method="get">
+<form action="{{ uri_for('enter_scores') }}" method="get">
    	<input type="hidden" name="game_id" value="{{ game_id }}" />
    	<input type="hidden" name="players" value="{{ players }}" />
 	<input type="submit" value="Enter Scores" data-theme="o">
@@ -30,7 +30,7 @@
 	{% if not players %}
 		No Players Created Yet
 	{% else %}
-	<form action="choose_players" method="get" style="text-align:center" >
+	<form action="{{ uri_for('choose_players') }}" method="get" style="text-align:center" >
 	   	<input type="hidden" name="game_id" value="{{ game_id }}" />
 	   	<input type="hidden" name="players_in_game" value="{{ players_in_game }}" />
 		<select name="player_added_to_game">
@@ -42,6 +42,11 @@
 	</form>
    	{% endif %}
 </p>
+<form action="{{ uri_for('edit_game') }}" method="get" style="padding-top:20px;padding-bottom:20px;">
+   	<input type="hidden" name="game_id" value="{{ game_id }}" />
+   	<input type="hidden" name="players_in_game" value="{{ players_in_game }}" />
+	<input type="submit" value="Edit Game Settings" data-theme="b">
+</form>
 <p>
 	Add New Player:
 	<form action="new_player" method="post" style="text-align:center">
@@ -51,7 +56,7 @@
 		<input type="submit" value="Submit" data-inline="true">
 	</form>
 </p>
-<form action="/" method="get" style="padding-top:20px">
+<form action="{{ uri_for('home') }}" method="get" style="padding-top:20px">
 	<input type="submit" value="Go To Home Page" data-theme="b">
 </form>
 </div>

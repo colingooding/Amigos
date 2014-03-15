@@ -19,12 +19,12 @@
 		{{ name }} successfully added to the player database
 	</p>
 	{% endif %}
-	<form action="choose_players">
+	<form action="{{ uri_for('choose_players') }}">
 	    <input type="hidden" name="game_id" value="{{ game_id }}" />
 	    <input type="hidden" name="players_in_game" value="{{ players_in_game }}" />
 	    <input type="submit" value="Return to Player Selection">
 	</form>
-	<form action="/" method="get" style="padding-top:20px">
+	<form action="{{ uri_for('home') }}" method="get" style="padding-top:20px">
 		<input type="submit" value="Go To Home Page" data-theme="b">
 	</form>
 </div>

@@ -20,6 +20,13 @@ class Game(model.Model):
         else:
             
             return None
+        
+    def edit_game(self, max_payment, point_value):
+        
+        self.max_payment = max_payment
+        self.point_value = point_value
+        
+        self.put()
     
     def add_player(self, player):
         
@@ -41,7 +48,7 @@ class Game(model.Model):
         
         players = self.get_players()
         
-        return ', '.join(players)
+        return ', '.join(players) if players else "No players added for this game"
         
         
 def create_game(max_payment=None, point_value=None):
@@ -55,6 +62,9 @@ def create_game(max_payment=None, point_value=None):
     game.created = datetime.datetime.utcnow() - datetime.timedelta(hours=5)
     
     game.put()
+    
+    import logging
+    logging.info("Game id is %s", game_id)
     
     return game
     

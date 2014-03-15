@@ -10,12 +10,13 @@
 </head>
 <body>
 <div style="width:90%;padding:5%;">
-<form action="{{ uri_for('calculate_payments') }}" method="get">
+<form action="{{ uri_for('submit_edited_game') }}" method="get">
    	<input type="hidden" name="game_id" value="{{ game_id }}" />
-   	<input type="hidden" name="jplayers" value="{{ jplayers }}" />
-	{% for player in players %}
-		{{ player }}: <input type="number" pattern="[0-9]*" name="{{ player }}" placeholder="Enter Score"><br>
-	{% endfor %}
+   	<input type="hidden" name="players_in_game" value="{{ players_in_game }}" />
+	Maximum Payment Per Player: 
+	<input type="number" step="0.25" pattern="\d+(\.\d{0,2})?" name="max_payment" placeholder="{{ '%0.2f'| format(max_payment) }}"><br>
+	Cost Per Point: 
+	<input type="number" step="0.01" pattern="(\.)?\d+(\.\d{0,2})?" name="point_value" placeholder="{{ '%0.2f'| format(point_value) }}"><br>
 	<input type="submit" value="Submit">
 </form>
 <form action="{{ uri_for('choose_players') }}">

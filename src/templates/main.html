@@ -10,10 +10,10 @@
 </head>
 <body>
 <div style="width:90%;padding:5%;">
-<form action="start_game">
+<form action="{{ uri_for('start_game') }}">
     <input type="submit" value="Start A New Game">
 </form>
-<form action="load_games">
+<form action="{{ uri_for('load_games') }}">
     <input type="submit" value="Load An Existing Game">
 </form>
 </div>
