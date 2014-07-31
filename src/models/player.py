@@ -13,11 +13,11 @@ def create_player(name):
     if get_player(name):
         logging.error("Player named %s already exists! Use a unique name.", name)    
         return
-    else:    
-        player = Player()
-        player.name = name
-        
-        return player
+
+    player = Player()
+    player.name = name
+    
+    return player
     
 def get_player(name):
     

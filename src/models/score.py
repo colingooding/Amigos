@@ -1,42 +1,41 @@
 from google.appengine.ext.ndb import model
 
-import logging
+import json
 
 class Score(model.Model):
 
-    score = model.IntegerProperty(required=True)
+    score = model.IntegerProperty()
     player_name = model.StringProperty(required=True)
     game_id = model.IntegerProperty(required=True)
+    hole_scores = model.JsonProperty()
     
-    def change_score(self, score):
+    def get_score_for_hole(self, hole):
+        
+        scores = json.loads(self.hole_scores)
+        return scores.get(hole, None)
+        
+    def record_score_for_hole(self, hole, score):
+        
+        scores = {}
+        if self.hole_scores:
+            scores = json.loads(self.hole_scores)
+        scores[hole] = score
+        self.hole_scores = json.dumps(scores)
+        self.put()
+        
+    def record_final_score(self, score):
         
         self.score = score
-        
         self.put()
     
-    
-def record_score(player_name, game_id, score):
+    def calculate_final_score(self):
         
-    existing_score = get_score(player_name, game_id)    
-    if existing_score:
-        logging.error("Score already recorded for player %s in game %s.", player_name, game_id)  
-        # TODO: Prompt for overwriting score  
-        existing_score.change_score(score)
-        
-        return existing_score
-        
-    else:    
-        new_score = Score()
-        new_score.player_name = player_name
-        new_score.game_id = game_id
-        new_score.score = score
-        
-        new_score.put()
-        
-        return new_score
+        final_score = 0
+        scores = json.loads(self.hole_scores)
+        for hole, hole_score in scores.iteritems():
+            final_score += hole_score
+        self.record_final_score(final_score)
     
 def get_score(player_name, game_id):
     
-    scores = Score.query(Score.player_name == player_name, Score.game_id == game_id).fetch()
-        
-    return scores[0] if scores else None
+    return Score.query(Score.player_name == player_name, Score.game_id == game_id).get()

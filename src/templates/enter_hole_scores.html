@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Enter Scores For Hole {{ hole }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+</head>
+<body>
+<div style="width:90%;padding:5%;">
+<h2>{{ course }} - Hole {{ hole }} - Par {{ par }}</h2>
+<form action="{{ uri_for('submit_scores_for_hole') }}" method="get">
+   	<input type="hidden" name="game_id" value="{{ game_id }}" />
+   	<input type="hidden" name="jplayers" value="{{ jplayers }}" />
+   	<input type="hidden" name="hole" value="{{ hole }}" />
+	{% for player in players %}
+		{{ player }}: <input type="number" pattern="[0-9]*" name="{{ player }}" placeholder="Enter Score"><br>
+	{% endfor %}
+	<div>Who is on the left team?</div>
+	{% for player in players %}
+		<div ><label for="{{ player }}">{{ player }}</label><input type="checkbox" id="{{ player }}"name="{{ player }}-left"></div>
+	{% endfor %}
+	<br>
+	<input type="submit" value="Submit Scores">
+</form>
+<form action="{{ uri_for('choose_players') }}">
+    <input type="hidden" name="game_id" value="{{ game_id }}" />
+    <input type="hidden" name="players_in_game" value="{{ players_in_game }}" />
+    <input type="submit" value="Return to Player Selection">
+</form>
+<form action="{{ uri_for('home') }}" method="get" style="padding-top:20px">
+	<input type="submit" value="Go To Home Page" data-theme="b">
+</form>
+</div>
+</body>
+</html>

@@ -10,10 +10,13 @@
 </head>
 <body>
 <div style="width:90%;padding:5%;">
-<form action="{{ uri_for('enter_scores') }}" method="get">
+<form action="{{ uri_for('enter_final_scores') }}" method="get">
    	<input type="hidden" name="game_id" value="{{ game_id }}" />
-   	<input type="hidden" name="players" value="{{ players }}" />
-	<input type="submit" value="Enter Scores" data-theme="o">
+	<input type="submit" value="Enter Final Scores" data-theme="o">
+</form>
+<form action="{{ uri_for('choose_course') }}" method="get">
+   	<input type="hidden" name="game_id" value="{{ game_id }}" />
+	<input type="submit" value="Start First Hole" data-theme="o">
 </form>
 {% if player_exists %}
 <p style="color: red">
@@ -42,10 +45,15 @@
 	</form>
    	{% endif %}
 </p>
-<form action="{{ uri_for('edit_game') }}" method="get" style="padding-top:20px;padding-bottom:20px;">
+<form action="{{ uri_for('edit_game') }}" method="get" style="padding-top:20px;">
    	<input type="hidden" name="game_id" value="{{ game_id }}" />
    	<input type="hidden" name="players_in_game" value="{{ players_in_game }}" />
 	<input type="submit" value="Edit Game Settings" data-theme="b">
+</form>
+<form action="{{ uri_for('edit_course') }}" method="get" style="padding-bottom:20px;">
+   	<input type="hidden" name="game_id" value="{{ game_id }}" />
+   	<input type="hidden" name="players_in_game" value="{{ players_in_game }}" />
+	<input type="submit" value="Create Course" data-theme="b">
 </form>
 <p>
 	Add New Player:

@@ -6,6 +6,7 @@ import json
 class Game(model.Model):
 
     game_id = model.IntegerProperty(required=True)
+    course_id = model.IntegerProperty()
     max_payment = model.FloatProperty(required=True)
     point_value = model.FloatProperty(required=True)
     created = model.DateTimeProperty(required=True)
@@ -51,12 +52,11 @@ class Game(model.Model):
         return ', '.join(players) if players else "No players added for this game"
         
         
-def create_game(max_payment=None, point_value=None):
-        
-    game_id = Game.allocate_ids(1)[0]  
+def create_game(max_payment=None, point_value=None, course_id=None):
     
     game = Game()
-    game.game_id = game_id
+    game.game_id = Game.allocate_ids(1)[0]
+    game.course_id = course_id
     game.max_payment = max_payment or 10.00
     game.point_value = point_value or 0.05
     game.created = datetime.datetime.utcnow() - datetime.timedelta(hours=5)
@@ -64,13 +64,13 @@ def create_game(max_payment=None, point_value=None):
     game.put()
     
     import logging
-    logging.info("Game id is %s", game_id)
+    logging.info("Game id is %s", game.game_id)
     
     return game
     
 def get_game(game_id):
     
-    return Game.query(Game.game_id == game_id).fetch()[0]
+    return Game.query(Game.game_id == game_id).get()
 
 def player_is_in_game(game, player):
     

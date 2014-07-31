@@ -20,7 +20,7 @@
 		{% endif %}
 	{% endfor %}
 
-	<form action="{{ uri_for('enter_scores') }}" method="get" style="padding-top:20px">
+	<form action="{{ uri_for('enter_final_scores') }}" method="get" style="padding-top:20px">
 	   	<input type="hidden" name="game_id" value="{{ game_id }}" />
 	   	<input type="hidden" name="players" value="{{ players }}" />
 		<input type="submit" value="Re-Enter Scores" data-theme="b">
