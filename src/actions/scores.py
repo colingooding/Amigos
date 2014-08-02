@@ -162,12 +162,21 @@ class CalculatePayments(webapp2.RequestHandler):
                 score = Score(player_name=player, game_id=game_id, score=int(self.request.get(player)))
                 score.put()
                 scores.append(score)
+                
+        final = True
+        for score in scores:
+            if score.score == None:
+                final = False
+        
+        if final:
+            game = get_game(int(game_id))
             
-        game = get_game(int(game_id))
-        
-        owings = calculate_owings(scores, game)
-        
-        payments = calculate_payments_from_owings(owings, game)
+            owings = calculate_owings(scores, game)
+            
+            payments = calculate_payments_from_owings(owings, game)
+        else:
+            owings = None
+            payments = None
         
         context = {
             'game_id': game_id,
